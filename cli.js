@@ -2,7 +2,8 @@
 
 const commander = require("commander");
 const chalk = require("chalk");
-const keybored = require("./index");
+const scales = require("./scales");
+const songs = require("./songs");
 
 const scaletypes = [
   "major", "naturalMinor", "harmonicMinor", "melodicMinor", 
@@ -22,7 +23,14 @@ commander
   .action((options) => {
     const scale = scaletypes.includes(options.scale) ? options.scale : "major";
     console.log(`starting 'Keybored' in the "${scale}" scale...`);
-    keybored.begin(options.scale);
+    scales.begin(options.scale);
+  });
+
+commander
+  .command("song")
+  .description("Plays song while typing")
+  .action((options) => {
+    songs.begin();
   });
 
 commander.parse(process.argv);
