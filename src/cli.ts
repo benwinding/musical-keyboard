@@ -6,8 +6,8 @@ import * as scales from "./scales";
 import * as songs from "./songs";
 
 const scaletypes = [
-  "major", "naturalMinor", "harmonicMinor", "melodicMinor", 
-  "pentatonicMajor", "pentatonicMinor", "blues", "minorBlues", 
+  "major", "naturalMinor", "harmonicMinor", "melodicMinor",
+  "pentatonicMajor", "pentatonicMinor", "blues", "minorBlues",
   "pentatonicBlues", "minorPentatonicBlues",
 ];
 
@@ -27,11 +27,13 @@ program
     scales.begin(options.scale);
   });
 
-  program
+program
   .command("song")
   .description("Plays song while typing")
   .action((options) => {
     songs.begin();
   });
 
-  program.parse(process.argv);
+program.version(require("../package.json").version);
+
+program.parse(process.argv);
