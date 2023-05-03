@@ -5,12 +5,12 @@
   "author": "Ben Winding",
   "license": "MIT",
   "description": "A tiny program that plays a musical note for each key you type!",
-  "main": "index.js",
+  "main": "src/index.js",
   "bin": {
-    "musical-keyboard": "cli.js"
+    "musical-keyboard": "src/cli.js"
   },
   "scripts": {
-    "start": "node cli.js"
+    "start": "node src/cli.js"
   },
   "dependencies": {
     "chalk": "4.x",
