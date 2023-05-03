@@ -27,7 +27,7 @@ function getFrequency(note: string): number {
   return noteFrequencies[note] || baseFrequency;
 }
 
-async function playTone(frequency: number, events: EventEmitter) {
+async function playTone(frequency: number) {
   const durationSeconds = 0.2;
   const amplitude = 500;
   const sampleRateHz = 44100;
@@ -69,4 +69,4 @@ async function playTone(frequency: number, events: EventEmitter) {
   });
 }
 
-export const playNote = (note: string, events: EventEmitter) => playTone(getFrequency(note), events);
+export const playNote = (note: string) => playTone(getFrequency(note));

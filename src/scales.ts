@@ -6,8 +6,6 @@ export function begin(scale: string) {
   const v = new GlobalKeyboardListener();
   console.log('Press any key to play a tone');
 
-  const events = new EventEmitter();
-
   v.addListener(function (e) {
     const key = e.name;
     e.state === 'DOWN' && key && onKeyPress(key);
@@ -17,7 +15,7 @@ export function begin(scale: string) {
     const key = str.trim().toLowerCase();
     const note = getNoteFromKey(key, scale);
     console.log(`Key pressed: ${str} => ${note}`);
-    playNote(note, events);
+    playNote(note);
   }
 }
 
