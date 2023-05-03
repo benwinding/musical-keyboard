@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const commander = require("commander");
-const chalk = require("chalk");
-const scales = require("./scales");
-const songs = require("./songs");
+import { Command } from "commander";
+import chalk from "chalk";
+import * as scales from "./scales";
+import * as songs from "./songs";
 
 const scaletypes = [
   "major", "naturalMinor", "harmonicMinor", "melodicMinor", 
@@ -11,7 +11,8 @@ const scaletypes = [
   "pentatonicBlues", "minorPentatonicBlues",
 ];
 
-commander
+const program = new Command();
+program
   .command("play")
   .description("Plays keybored in default scale")
   .option(
@@ -26,11 +27,11 @@ commander
     scales.begin(options.scale);
   });
 
-commander
+  program
   .command("song")
   .description("Plays song while typing")
   .action((options) => {
     songs.begin();
   });
 
-commander.parse(process.argv);
+  program.parse(process.argv);

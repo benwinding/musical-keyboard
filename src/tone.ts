@@ -1,12 +1,12 @@
-const Speaker = require('speaker');
+import Speaker from 'speaker';
 
-function getFrequency(note) {
+function getFrequency(note: string): number {
   // return the frequency for the given key
   // you can create a dictionary that maps keys to frequencies
   // or use a formula to calculate the frequency based on the key
   // for example:
   const baseFrequency = 440; // A4 note
-  const noteFrequencies = {
+  const noteFrequencies: {[note: string]: number} = {
     'c': baseFrequency * Math.pow(2, -9/12), // C0
     'c#': baseFrequency * Math.pow(2, -8/12), // C#0/Db0
     'd': baseFrequency * Math.pow(2, -7/12), // D0
@@ -23,7 +23,7 @@ function getFrequency(note) {
     // and so on for all the notes you want to handle
   };
 
-  return noteFrequencies[note];
+  return noteFrequencies[note] || baseFrequency;
 }
 
 const durationInSeconds = 0.1;
@@ -35,7 +35,7 @@ const speaker = new Speaker({
   sampleRate: sampleRate, // 44,100 Hz sample rate
 });
 
-async function playTone(frequency) {
+async function playTone(frequency: number) {
   const numSamples = durationInSeconds * sampleRate;
   const samples = Buffer.alloc(numSamples * 2);
 
@@ -45,7 +45,7 @@ async function playTone(frequency) {
     samples.writeInt16LE(sample, i * 2);
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     speaker.write((samples), () => {
       setTimeout(() => {
         resolve();
@@ -54,6 +54,4 @@ async function playTone(frequency) {
   })
 }
 
-module.exports = {
-  playNote: (note) => playTone(getFrequency(note)),
-};
+export const playNote = (note: string) => playTone(getFrequency(note));

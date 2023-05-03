@@ -1,27 +1,25 @@
-const { GlobalKeyboardListener } = require("node-global-key-listener");
-const { playNote } = require("./tone");
+import { GlobalKeyboardListener } from "node-global-key-listener";
+import { playNote } from "./tone";
 
-module.exports = {
-  begin(scale) {
-    const v = new GlobalKeyboardListener();
-    console.log('Press any key to play a tone');
-    
-    v.addListener(function (e, down) {
-      const key = e.name;
-      onKeyPress(key, scale);
-    });    
-  }
-};
+export function begin(scale: string) {
+  const v = new GlobalKeyboardListener();
+  console.log('Press any key to play a tone');
 
-function onKeyPress(str, scale) {
+  v.addListener(function (e, down) {
+    const key = e.name;
+    key && onKeyPress(key, scale);
+  });
+}
+
+function onKeyPress(str: string, scale: string) {
   const key = str.trim().toLowerCase();
   const note = getNoteFromKey(key, scale);
   console.log(`Key pressed: ${str} => ${note}`);
   playNote(note);
 }
 
-function getNoteFromKey(key, scale) {
-  const scales = {
+function getNoteFromKey(key: string, scale: string) {
+  const scales: {[scale: string]: string[]} = {
     // Common musical scales
     major: ['c', 'd', 'e', 'f', 'g', 'a', 'b'],
     naturalMinor: ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
@@ -29,7 +27,7 @@ function getNoteFromKey(key, scale) {
     melodicMinor: ['a', 'b', 'c', 'd', 'e', 'f#', 'g#'],
     pentatonicMajor: ['c', 'd', 'e', 'g', 'a'],
     pentatonicMinor: ['a', 'c', 'd', 'e', 'g'],
-    
+
     // Rock scales
     blues: ['c', 'd#', 'f', 'f#', 'g', 'a#'],
     minorBlues: ['a', 'c', 'd', 'd#', 'e', 'g'],
@@ -43,7 +41,7 @@ function getNoteFromKey(key, scale) {
   return note;
 }
 
-function getIndexFromKey(input, max) {
+function getIndexFromKey(input: string, max: number) {
   const asciiValue = input.charCodeAt(0);
   return Math.floor(asciiValue % max);
 }
