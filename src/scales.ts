@@ -1,21 +1,24 @@
 import { GlobalKeyboardListener } from "node-global-key-listener";
 import { playNote } from "./tone";
+import { EventEmitter } from "events";
 
 export function begin(scale: string) {
   const v = new GlobalKeyboardListener();
   console.log('Press any key to play a tone');
 
-  v.addListener(function (e, down) {
-    const key = e.name;
-    key && onKeyPress(key, scale);
-  });
-}
+  const events = new EventEmitter();
 
-function onKeyPress(str: string, scale: string) {
-  const key = str.trim().toLowerCase();
-  const note = getNoteFromKey(key, scale);
-  console.log(`Key pressed: ${str} => ${note}`);
-  playNote(note);
+  v.addListener(function (e) {
+    const key = e.name;
+    e.state === 'DOWN' && key && onKeyPress(key);
+  });
+  
+  function onKeyPress(str: string) {
+    const key = str.trim().toLowerCase();
+    const note = getNoteFromKey(key, scale);
+    console.log(`Key pressed: ${str} => ${note}`);
+    playNote(note, events);
+  }
 }
 
 function getNoteFromKey(key: string, scale: string) {
@@ -45,4 +48,3 @@ function getIndexFromKey(input: string, max: number) {
   const asciiValue = input.charCodeAt(0);
   return Math.floor(asciiValue % max);
 }
-
