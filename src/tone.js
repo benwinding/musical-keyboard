@@ -26,11 +26,16 @@ function getFrequency(note) {
   return noteFrequencies[note];
 }
 
-function playTone(frequency) {
-  const durationInSeconds = 0.2;
-  const sampleRate = 44100;
-  const amplitude = 32767;
+const durationInSeconds = 0.1;
+const amplitude = 10000;
+const sampleRate = 44100;
+const speaker = new Speaker({
+  channels: 1,          // mono
+  bitDepth: 16,         // 16-bit samples
+  sampleRate: sampleRate, // 44,100 Hz sample rate
+});
 
+async function playTone(frequency) {
   const numSamples = durationInSeconds * sampleRate;
   const samples = Buffer.alloc(numSamples * 2);
 
@@ -40,17 +45,13 @@ function playTone(frequency) {
     samples.writeInt16LE(sample, i * 2);
   }
 
-  const speaker = new Speaker({
-    channels: 1,          // mono
-    bitDepth: 16,         // 16-bit samples
-    sampleRate: sampleRate, // 44,100 Hz sample rate
-  });
-
-  speaker.write(samples, (err) => {
-    setTimeout(() => {
-      speaker.close()
-    }, durationInSeconds * 1000);
-  });
+  return new Promise((resolve, reject) => {
+    speaker.write((samples), () => {
+      setTimeout(() => {
+        resolve();
+      }, durationInSeconds * 1000);
+    });
+  })
 }
 
 module.exports = {
